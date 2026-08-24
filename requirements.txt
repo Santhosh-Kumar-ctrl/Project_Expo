@@ -1,0 +1,12 @@
+langchain-core==1.4.1
+langchain-community==0.4.2
+langchain-text-splitters==1.1.2
+langchain-chroma==1.1.0
+langchain-ollama==1.1.0
+chromadb==1.5.9
+python-dotenv==1.2.2
+pypdf==6.13.1
+unstructured==0.6.8
+Pillow
+requests==2.32.5
+numpy==1.26.4
