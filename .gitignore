@@ -76,3 +76,6 @@ Pipfile.lock
 
 # Coverage
 coverage.xml
+
+#test files
+test_*.py
