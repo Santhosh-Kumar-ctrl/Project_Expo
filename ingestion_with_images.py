@@ -152,7 +152,7 @@ def create_ai_enhanced_summary(text: str, tables: List[str], images: List[str]) 
         return response.content
 
     except Exception as e:
-        print(f"     ❌ AI summary failed: {e}")
+        print(f"     AI summary failed: {e}")
         # Fallback to simple summary
         summary = f"{text[:300]}..."
         if tables:
@@ -164,7 +164,7 @@ def create_ai_enhanced_summary(text: str, tables: List[str], images: List[str]) 
 
 def summarise_chunks(chunks):
     """Process all chunks with AI Summaries"""
-    print("🧠 Processing chunks with AI Summaries...")
+    print("Processing chunks with AI Summaries...")
 
     langchain_documents = []
     total_chunks = len(chunks)
@@ -185,18 +185,18 @@ def summarise_chunks(chunks):
 
         # Create AI-enhanced summary if chunk has tables/images
         if content_data["tables"] or content_data["images"]:
-            print("     → Creating AI summary for mixed content...")
+            print("     -> Creating AI summary for mixed content...")
             try:
                 enhanced_content = create_ai_enhanced_summary(
                     content_data["text"], content_data["tables"], content_data["images"]
                 )
-                print("     → AI summary created successfully")
-                print(f"     → Enhanced content preview: {enhanced_content[:200]}...")
+                print("     -> AI summary created successfully")
+                print(f"     -> Enhanced content preview: {enhanced_content[:200]}...")
             except Exception as e:
-                print(f"     ❌ AI summary failed: {e}")
+                print(f"     AI summary failed: {e}")
                 enhanced_content = content_data["text"]
         else:
-            print("     → Using raw text (no tables/images)")
+            print("     -> Using raw text (no tables/images)")
             enhanced_content = content_data["text"]
 
         # Create LangChain Document with rich metadata
@@ -219,7 +219,7 @@ def summarise_chunks(chunks):
 
         langchain_documents.append(doc)
 
-    print(f"✅ Processed {len(langchain_documents)} chunks")
+    print(f"Processed {len(langchain_documents)} chunks")
     return langchain_documents
 
 
@@ -249,5 +249,5 @@ def export_chunks_to_json(chunks, filename="chunks_export.json"):
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(export_data, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ Exported {len(export_data)} chunks to {filename}")
+    print(f"Exported {len(export_data)} chunks to {filename}")
     return export_data

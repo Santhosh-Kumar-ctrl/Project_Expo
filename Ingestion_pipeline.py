@@ -2,6 +2,7 @@ import os
 from Chunking import partition_doc, chunking_by_title
 from ingestion_with_images import summarise_chunks
 from Vectorization import create_vector_store
+from config import ENABLE_GRAPH_RETRIEVAL, check_neo4j_available
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -80,7 +81,17 @@ def advanced_ingestion_pipeline(pdf_paths):
 
     print(f"Indexed {db._collection.count()} chunk(s) in dbfinal/chroma_db.")
 
-    print("🎉 Pipeline completed successfully!")
+    if ENABLE_GRAPH_RETRIEVAL and check_neo4j_available():
+        from graph_ingestion import run_graph_ingestion
+
+        run_graph_ingestion(all_summarised_chunks)
+    elif ENABLE_GRAPH_RETRIEVAL:
+        print(
+            "Neo4j unavailable. Skipping graph ingestion. "
+            "Set up Neo4j and re-run to populate the knowledge graph."
+        )
+
+    print("Pipeline completed successfully!")
 
 
 if __name__ == "__main__":

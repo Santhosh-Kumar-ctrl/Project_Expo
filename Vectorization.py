@@ -4,7 +4,7 @@ from langchain_chroma import Chroma
 
 def create_vector_store(documents, persist_directory="dbv1/chroma_db"):
     """Create and persist ChromaDB vector store"""
-    print("🔮 Creating embeddings and storing in ChromaDB...")
+    print("Creating embeddings and storing in ChromaDB...")
 
     embedding_model = OllamaEmbeddings(model="nomic-embed-text")
 
@@ -18,5 +18,5 @@ def create_vector_store(documents, persist_directory="dbv1/chroma_db"):
     )
     print("--- Finished creating vector store ---")
 
-    print(f"✅ Vector store created and saved to {persist_directory}")
+    print(f"Vector store created and saved to {persist_directory}")
     return vectorstore
