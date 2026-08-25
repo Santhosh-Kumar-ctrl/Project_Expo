@@ -18,9 +18,9 @@ load_dotenv()
 
 
 llm = ChatGroq(
-    model=os.getenv("GROQ_MODEL", "qwen/qwen3.6-27b"),
+    model=os.getenv("GROQ_MODEL", "openai/gpt-oss-20b"),
     temperature=0,
-    max_tokens=16384,
+    max_tokens=2048,
     groq_api_key=os.getenv("GROQ_API_KEY"),
 )
 

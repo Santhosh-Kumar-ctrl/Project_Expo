@@ -3,16 +3,7 @@ from graph_schema import ImpactQuery, ImpactItem, ImpactAnalysisResult
 from langchain_core.messages import HumanMessage, SystemMessage
 
 
-ENTITY_EXTRACTION_PROMPT = """Extract the policy entity and proposed change from the user's query.
-
-Identify:
-- The entity being discussed (e.g., "attendance requirement", "minimum GPA", "credit hours")
-- What type it is: Policy, Requirement, Entity, Role, Process, or Consequence
-- What change is proposed: modify, remove, add, increase, or decrease
-- The current value if mentioned (e.g., "70%")
-- The proposed new value if mentioned (e.g., "75%")
-
-If values are not explicitly stated, leave them as null."""
+ENTITY_EXTRACTION_PROMPT = """Extract the policy entity and proposed change from the query. Identify the entity name, its type (Policy/Requirement/Entity/Role/Process/Consequence), the change type (modify/remove/add/increase/decrease), and current/proposed values if mentioned."""
 
 
 def _get_driver():
@@ -22,7 +13,16 @@ def _get_driver():
 
 
 def _extract_impact_query(query: str, llm) -> ImpactQuery:
-    structured_llm = llm.with_structured_output(ImpactQuery)
+    from langchain_groq import ChatGroq
+    import os
+
+    extraction_llm = ChatGroq(
+        model=os.getenv("GROQ_MODEL", "openai/gpt-oss-20b"),
+        temperature=0,
+        max_tokens=256,
+        groq_api_key=os.getenv("GROQ_API_KEY"),
+    )
+    structured_llm = extraction_llm.with_structured_output(ImpactQuery)
     messages = [
         SystemMessage(content=ENTITY_EXTRACTION_PROMPT),
         HumanMessage(content=query),

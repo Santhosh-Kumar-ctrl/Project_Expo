@@ -17,12 +17,14 @@ def _format_impacts(impacts: list) -> str:
     return "\n".join(lines)
 
 
-IMPACT_ANALYSIS_PROMPT = """You are a policy impact analyst. Based on the knowledge graph analysis below, provide a structured impact assessment.
+IMPACT_ANALYSIS_PROMPT = """You are a policy impact analyst. Based on the knowledge graph analysis below, clearly explain which policies are affected and how.
 
 IMPORTANT OUTPUT RULES:
 - Return only the final analysis for the user.
 - Do not show or mention your reasoning, analysis, chain of thought, or thinking process.
 - Never output <think> tags or any content inside them.
+- Do NOT include recommendations, suggestions, or action items.
+- Focus only on stating which policies are affected and explaining the dependency chain clearly.
 
 PROPOSED CHANGE:
 {change_description}
@@ -40,19 +42,19 @@ Provide your analysis in this structure:
 
 **Change:** {change_description}
 
-**Direct Impacts:**
-(List each directly affected entity with a brief explanation of why it is affected)
+**Directly Affected Policies:**
+For each directly affected policy/entity, state:
+- What it is
+- How it is connected to the changed entity
+- Why the change directly affects it
 
-**Indirect/Cascading Impacts:**
-(List each indirectly affected entity with the dependency chain explanation)
+**Indirectly Affected Policies:**
+For each indirectly affected policy/entity, state:
+- What it is
+- The full dependency chain (A affects B, which affects C)
+- Why the change cascades to it
 
-**Risk Assessment:**
-(Overall assessment of the scope and severity of this change)
-
-**Recommendations:**
-(Any policies or entities that should be reviewed or updated)
-
-If insufficient graph data exists for any section, clearly state what could not be determined. Do not invent relationships that are not present in the data above."""
+Do not include recommendations, suggestions, risk assessments, or action items. Only explain what is affected and how. Do not invent relationships that are not present in the data above."""
 
 
 def generate_impact_answer(
